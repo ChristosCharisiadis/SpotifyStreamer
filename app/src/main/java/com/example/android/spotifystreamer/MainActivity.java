@@ -1,5 +1,6 @@
 package com.example.android.spotifystreamer;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -24,7 +26,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-
+//TODO rotation
 public class MainActivity extends ActionBarActivity {
     private final String LOG_TAG = MainActivity.class.getSimpleName();
     private EditText mEditText;
@@ -54,6 +56,14 @@ public class MainActivity extends ActionBarActivity {
                     mListView.setAdapter(adapter);
                 }
                 return false;
+            }
+        });
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Artist selectedArtist = (Artist) adapter.getItem(position);
+                Intent intent = new Intent(getBaseContext(), TopSongsActivity.class).putExtra(Intent.EXTRA_TEXT, selectedArtist.getId());
+                startActivity(intent);
             }
         });
     }
@@ -95,6 +105,10 @@ public class MainActivity extends ActionBarActivity {
                 return null;
             }
             String name = params[0].replace(" ", "+");  //replace empty spaces with "+" so we can add the name to the url
+            return getArtists(name);
+        }
+
+        private ArrayList<Artist> getArtists(String name) {
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
             String forecastJsonStr = null;
@@ -154,10 +168,9 @@ public class MainActivity extends ActionBarActivity {
             {
                 Log.e(LOG_TAG, e.getMessage(), e);
                 e.printStackTrace();
+                return null;
             }
-            return null;
         }
-
         private ArrayList<Artist> getArtistDataFromJson (String forecastJsonStr) throws JSONException{
             ArrayList<Artist> artistsList = new ArrayList<>();
             JSONObject jsonObj = new JSONObject(forecastJsonStr);
@@ -179,7 +192,5 @@ public class MainActivity extends ActionBarActivity {
             }
             return artistsList;
         }
-
-
     }
 }

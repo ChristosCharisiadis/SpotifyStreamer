@@ -16,7 +16,7 @@ public class Artist {
     public String getName() {
         return name;
     }
-    public String geetId() {
+    public String getId() {
         return id;
     }
     public String getImage() {
