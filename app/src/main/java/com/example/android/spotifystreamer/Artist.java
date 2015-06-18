@@ -1,9 +1,12 @@
 package com.example.android.spotifystreamer;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /*
 Class for each Artist with his name id and image url.
  */
-public class Artist {
+public class Artist implements Parcelable{
     private String name;
     private String id;
     private String image;
@@ -12,6 +15,13 @@ public class Artist {
         this.name = name;
         this.id = id;
         this. image = image;
+    }
+    public Artist(Parcel in) {
+        String[] data = new String[3];
+        in.readStringArray(data);
+        this.name = data[0];
+        this.id = data[1];
+        this.image = data[2];
     }
     public String getName() {
         return name;
@@ -31,4 +41,22 @@ public class Artist {
     public void setImage (String image) {
         this.image = image;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeStringArray(new String[] {name, id, image});
+    }
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public Artist createFromParcel (Parcel in) {
+            return new Artist(in);
+        }
+        public Artist[] newArray(int size) {
+            return new Artist[size];
+        }
+    };
 }
