@@ -3,19 +3,32 @@ package com.example.android.spotifystreamer;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-/*
-Class for each Artist with his name id and image url.
+
+/**
+ * Artist.java - a class representing an artist
+ *
  */
 public class Artist implements Parcelable{
     private String name;
     private String id;
     private String image;
 
+    /**
+     * Default Constructor
+     * @param name
+     * @param id
+     * @param image
+     */
     public Artist (String name, String id, String image) {
         this.name = name;
         this.id = id;
         this. image = image;
     }
+
+    /**
+     * Constructor for parcelable interface
+     * @param in
+     */
     public Artist(Parcel in) {
         String[] data = new String[3];
         in.readStringArray(data);

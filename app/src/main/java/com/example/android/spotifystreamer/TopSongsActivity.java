@@ -23,8 +23,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-/*
-Activity that finds the top 10 songs of a selected artist.
+/**
+ * TopSongsActivity.java - activity that finds and shows the top 10 songs of an artist
  */
 public class TopSongsActivity extends ActionBarActivity {
     private final String LOG_TAG = TopSongsActivity.class.getSimpleName();
@@ -38,8 +38,9 @@ public class TopSongsActivity extends ActionBarActivity {
         setContentView(R.layout.activity_top_songs);
         Intent intent = this.getIntent();
         mListView = (ListView) findViewById(R.id.top_songs_list);
+        //get the artistId from the intent and find the top 10 songs
         if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
-            String artistId = intent.getStringExtra(Intent.EXTRA_TEXT); //get the current artist's ID
+            String artistId = intent.getStringExtra(Intent.EXTRA_TEXT);
             SearchSongsTask search = new SearchSongsTask();
             search.execute(artistId);
             songs = new ArrayList<>();
@@ -48,6 +49,7 @@ public class TopSongsActivity extends ActionBarActivity {
             } catch (Exception e) {
                 Log.d(LOG_TAG, e.toString());
             }
+            //if no songs found displa a toast, else inflate the view
             if (songs.size() == 0) {
                 Toast.makeText(getBaseContext(),"No Songs found for this artist.", Toast.LENGTH_LONG).show();
             }
@@ -58,6 +60,9 @@ public class TopSongsActivity extends ActionBarActivity {
         }
     }
 
+    /**
+     * SearchSongsTask.class - AsynkTask that finds the top 10 songs of an artist
+     */
     public class SearchSongsTask extends AsyncTask<String, Void, ArrayList<Song>> {
         @Override
         protected void onPostExecute(ArrayList<Song> songs) {
@@ -74,6 +79,11 @@ public class TopSongsActivity extends ActionBarActivity {
             return getTopSongs(artistId);
         }
 
+        /**
+         * Find the top 10 songs info from spotify
+         * @param artistId our current artist
+         * @return ArrayList of the songs
+         */
         private ArrayList<Song> getTopSongs(String artistId) {
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
@@ -81,8 +91,8 @@ public class TopSongsActivity extends ActionBarActivity {
             final String BASE_URL = "https://api.spotify.com/v1/artists/";
             try {
                 URL url = new URL(BASE_URL + artistId + "/top-tracks?country=SE");
-                //example URL https://api.spotify.com/v1/search?q=firstname+lastname&type=artist
-                // Create the request to OpenWeatherMap, and open the connection
+                //example URL https://api.spotify.com/v1/artists/"artistId"/top-tracks?country=SE
+                // Create the request to spotify, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
                 urlConnection.connect();
@@ -138,6 +148,12 @@ public class TopSongsActivity extends ActionBarActivity {
             return null;
         }
 
+        /**
+         * Parse the Json String and get the data
+         * @param forecastJsonStr input String in Json format
+         * @return ArrayList with the results from the Json parsing
+         * @throws JSONException
+         */
         private ArrayList<Song> getSongDataFromJson(String forecastJsonStr) throws JSONException {
             ArrayList<Song> songsList = new ArrayList<>();
             JSONObject jsonObj = new JSONObject(forecastJsonStr);

@@ -1,7 +1,7 @@
 package com.example.android.spotifystreamer;
 
 /**
- Class for each song with it's name, album, url and images.
+ * Song.java - a class representing a song
  */
 public class Song {
     private String trackName;
@@ -10,6 +10,14 @@ public class Song {
     private String smallImage;
     private String url;
 
+    /**
+     * Default Constructor
+     * @param trackName
+     * @param albumName
+     * @param bigImage
+     * @param smallImage
+     * @param url
+     */
     public Song(String trackName, String albumName, String bigImage, String smallImage, String url) {
         this.trackName = trackName;
         this.albumName = albumName;

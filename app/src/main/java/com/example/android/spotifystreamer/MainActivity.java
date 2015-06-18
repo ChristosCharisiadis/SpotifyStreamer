@@ -27,7 +27,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-
+/**
+ * MainActivity.java - Main Activity class in which we search for an artist
+ */
 public class MainActivity extends ActionBarActivity {
     private final String LOG_TAG = MainActivity.class.getSimpleName();
     private EditText mEditText;
@@ -41,6 +43,7 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         mEditText = (EditText) findViewById(R.id.artist_search);
         mListView = (ListView) findViewById(R.id.artist_list);
+        //search for the artist in the EditTextView and create the result list
         mEditText.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -59,6 +62,7 @@ public class MainActivity extends ActionBarActivity {
                 return false;
             }
         });
+        //start TopSongsActivity when a list item is clicked
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -105,6 +109,9 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * AsyncTask.class - Class to find the artists and get their data
+     */
     public class SearchArtistTask extends AsyncTask<String, Void, ArrayList<Artist>> {
         @Override
         protected void onPostExecute(ArrayList<Artist> artists) {
@@ -123,6 +130,11 @@ public class MainActivity extends ActionBarActivity {
             return getArtists(name);
         }
 
+        /**
+         * Find the artists info from spotify
+         * @param name the search querry
+         * @return ArrayList with the results
+         */
         private ArrayList<Artist> getArtists(String name) {
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
@@ -131,7 +143,7 @@ public class MainActivity extends ActionBarActivity {
             try {
                 URL url = new URL(BASE_URL + "q=" + name + "&type=artist");
                 //example URL https://api.spotify.com/v1/search?q=firstname+lastname&type=artist
-                // Create the request to OpenWeatherMap, and open the connection
+                // Create the request to spotify, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
                 urlConnection.connect();
@@ -186,6 +198,13 @@ public class MainActivity extends ActionBarActivity {
                 return null;
             }
         }
+
+        /**
+         * Parse the Json String and get the data
+         * @param forecastJsonStr input String in Json format
+         * @return ArrayList with the results from the Json parsing
+         * @throws JSONException
+         */
         private ArrayList<Artist> getArtistDataFromJson (String forecastJsonStr) throws JSONException{
             ArrayList<Artist> artistsList = new ArrayList<>();
             JSONObject jsonObj = new JSONObject(forecastJsonStr);

@@ -12,13 +12,16 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-/*
-Custom adapter to create the list view for the top 10 songs of an artist.
+/**
+ * SongAdapter.java - Class for a custom adapter for the artists
  */
 public class SongAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private ArrayList<Song> songs;
 
+    /**
+     * ViewHolder.class - class to hold the views that the adapter inflates
+     */
     private class ViewHolder {
         TextView songNameText;
         TextView albumNameText;
@@ -29,7 +32,6 @@ public class SongAdapter extends BaseAdapter {
         inflater = LayoutInflater.from(context);
         this.songs = songs;
     }
-
 
     @Override
     public int getCount() {

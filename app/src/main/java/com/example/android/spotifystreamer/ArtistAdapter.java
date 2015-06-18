@@ -12,13 +12,17 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-/*
-Custom adapter to create the list view for the artists.
+
+/**
+ * ArtistAdapter.java - Class for a custom adapter for the artists
  */
 public class ArtistAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private ArrayList<Artist> artists;
 
+    /**
+     * ViewHolder.class - class to hold the views that the adapter inflates
+     */
     private class ViewHolder {
         TextView mTextView;
         ImageView mImageView;
